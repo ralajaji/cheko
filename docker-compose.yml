@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: cheko-db
+    environment:
+      POSTGRES_DB: cheko
+      POSTGRES_USER: cheko
+      POSTGRES_PASSWORD: cheko
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d:ro
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cheko -d cheko"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+    container_name: cheko-backend
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: cheko
+      DB_USER: cheko
+      DB_PASSWORD: cheko
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
