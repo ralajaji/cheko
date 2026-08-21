@@ -5,7 +5,7 @@ const Home = lazy(() => import('../../features/home/Home'))
 
 function HomePage() {
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<Loader fullScreen={false} />}>
       <Home />
     </Suspense>
   )

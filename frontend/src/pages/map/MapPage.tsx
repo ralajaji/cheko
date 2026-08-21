@@ -5,7 +5,7 @@ const Map = lazy(() => import('../../features/map/Map'))
 
 function MapPage() {
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<Loader fullScreen={false} />}>
       <Map />
     </Suspense>
   )

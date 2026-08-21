@@ -27,7 +27,7 @@ function Loader({ fullScreen = true, className = '' }: LoaderProps) {
   return (
     <div
       className={`${
-        fullScreen ? 'fixed inset-0' : ''
+        fullScreen ? 'fixed inset-0' : 'h-full'
       } grid place-items-center bg-background dark:bg-background-dark ${className}`}
     >
       <div className="loader">
