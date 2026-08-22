@@ -1,19 +1,23 @@
 import { useMemo, useState } from "react";
+import Dialog from "@mui/material/Dialog";
 import MenuSearchAndFilter from "./MenuSearchAndFilter";
 import { groupMenuByCategory } from "../../components/utils/groupMenuByCategory";
 import useQueryApi from "../../hooks/useQueryApi";
-import { getMenu } from "./Home.api";
+import { getMenu, type GetMenuResponseType } from "./Home.api";
 import RestaurantMenuTypeCards, {
   type CategoryCount,
 } from "./RestaurantMenuTypeCards";
 import RestaurantItemCard from "./RestaurantItemCard";
+import DishDetails from "./DishDetails";
 
 function Home() {
-  const [search, setSearch] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [search, setSearch] = useState<string | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[] | null>(null);
+  const [selectedDish, setSelectedDish] = useState<GetMenuResponseType | null>(null);
 
   const { data, isLoading } = useQueryApi(getMenu)
-    .addQueryParams({ search, category: selectedCategories.join(",") })
+    .addQueryParams({ search, category: selectedCategories?.join(",") })
+    .addUseQueryOptions({ enabled: !!search || !!selectedCategories })
     .useExecute();
 
   const groupedMenu = useMemo(() => groupMenuByCategory(data), [data]);
@@ -70,12 +74,43 @@ function Home() {
                   image={item.image}
                   calorie={item.calorie}
                   price={item.price}
+                  onSelect={() => setSelectedDish(item)}
                 />
               ))}
             </div>
           </div>
         ))
       )}
+
+      <Dialog
+        open={!!selectedDish}
+        onClose={() => setSelectedDish(null)}
+        maxWidth="sm"
+        fullWidth
+        slotProps={{
+          paper: {
+            className: "m-4",
+            sx: {
+              borderRadius: "1rem",
+              overflow: "hidden",
+              backgroundColor: "transparent",
+              boxShadow: "none",
+            },
+          },
+        }}
+      >
+        {selectedDish ? (
+          <DishDetails
+            id={selectedDish.id}
+            name={selectedDish.name}
+            description={selectedDish.description}
+            image={selectedDish.image}
+            calorie={selectedDish.calorie}
+            price={selectedDish.price}
+            onClose={() => setSelectedDish(null)}
+          />
+        ) : null}
+      </Dialog>
     </div>
   );
 }

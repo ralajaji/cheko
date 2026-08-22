@@ -1,17 +1,19 @@
+import CloseIcon from '@mui/icons-material/Close'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import useCartStore from '../../store/cartStore'
 
-export type RestaurantItemCardProps = {
+export type DishDetailsProps = {
   id: number
   name: string
+  description: string
   image: string
   calorie: number
   price: number
-  onSelect?: () => void
+  onClose: () => void
 }
 
-function RestaurantItemCard({ id, name, image, calorie, price, onSelect }: RestaurantItemCardProps) {
+function DishDetails({ id, name, description, image, calorie, price, onClose }: DishDetailsProps) {
   const count = useCartStore((state) => state.counts[id] ?? 0)
   const increment = useCartStore((state) => state.increment)
   const decrement = useCartStore((state) => state.decrement)
@@ -19,27 +21,29 @@ function RestaurantItemCard({ id, name, image, calorie, price, onSelect }: Resta
   const imageSrc = `${image}${image.includes('?') ? '&' : '?'}lock=${id}`
 
   return (
-    <div
-      onClick={onSelect}
-      className="flex items-center gap-4 rounded-2xl bg-white p-3 dark:bg-gray-900"
-    >
-      <img src={imageSrc} alt={name} className="h-20 w-20 shrink-0 rounded-xl object-cover" />
+    <div className="relative flex flex-col gap-3 rounded-2xl bg-white p-4 dark:bg-gray-900">
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close"
+        className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-gray-300 text-white dark:bg-gray-700"
+      >
+        <CloseIcon fontSize="small" />
+      </button>
 
-      <div className="flex min-w-0 grow flex-col gap-1">
-        <span className="truncate text-base font-semibold text-black dark:text-white">{name}</span>
-        <span className="text-sm text-gray-400 dark:text-gray-500">{calorie} Cal</span>
-      </div>
+      <span className="pr-10 text-lg font-semibold text-black dark:text-white">{name}</span>
+      <span className="text-sm text-gray-400 dark:text-gray-500">{calorie} Cal</span>
+      <span className="text-sm text-gray-500 dark:text-gray-400">{description}</span>
 
-      <div className="flex shrink-0 flex-col items-end gap-2">
+      <img src={imageSrc} alt={name} className="w-full rounded-2xl object-cover" />
+
+      <div className="flex items-center justify-end gap-4">
         <span className="text-base font-semibold text-primary">{price} SR</span>
 
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation()
-              decrement(id)
-            }}
+            onClick={() => decrement(id)}
             disabled={count === 0}
             aria-label={`Decrease ${name} quantity`}
             className="flex size-7 items-center justify-center rounded-lg bg-primary/40 text-black transition-opacity disabled:cursor-not-allowed disabled:opacity-40 dark:text-white"
@@ -51,10 +55,7 @@ function RestaurantItemCard({ id, name, image, calorie, price, onSelect }: Resta
 
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation()
-              increment(id)
-            }}
+            onClick={() => increment(id)}
             aria-label={`Increase ${name} quantity`}
             className="flex size-7 items-center justify-center rounded-lg bg-primary/40 text-black dark:text-white"
           >
@@ -66,4 +67,4 @@ function RestaurantItemCard({ id, name, image, calorie, price, onSelect }: Resta
   )
 }
 
-export default RestaurantItemCard
+export default DishDetails
