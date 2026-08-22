@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import Loader from './Loader'
 
-const SPLASH_DURATION_MS = 3000
+const SPLASH_DURATION_MS = 2000
 
 interface SplashScreenProps {
   children: ReactNode

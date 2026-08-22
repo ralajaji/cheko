@@ -6,7 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
 
-export type SearchAndFilterProps = {
+type SearchAndFilterProps = {
   search: string;
   filters: string[];
   filterOptions: string[];
