@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
+import LightModeIcon from '@mui/icons-material/LightMode'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
 import headerBg from '../../assets/header_bg.png'
 
 const tabs = [
@@ -17,7 +19,7 @@ function MainLayout() {
 
   return (
     <div id="app-layout" className="flex min-h-screen flex-col">
-      <div className="flex items-center justify-between">
+      <div className="sticky top-0 z-10 flex items-center justify-between bg-background dark:bg-background-dark">
         <header className="relative h-40 w-11/12 overflow-hidden rounded-br-[40px]">
           <img
             src={headerBg}
@@ -26,7 +28,7 @@ function MainLayout() {
           />
           <div className="absolute inset-0 bg-black/80" />
 
-          <nav className="absolute top-0 left-45 flex gap-2">
+          <nav className="absolute top-0 md:ms-36 flex gap-2">
             {tabs.map(({ to, label }) => (
               <NavLink
                 key={to}
@@ -48,7 +50,7 @@ function MainLayout() {
         </div>
       </div>
 
-      <main className="flex-1">
+      <main className="flex-1 md:mx-36 mx-2">
         <Outlet />
       </main>
     </div>
@@ -60,13 +62,7 @@ export default MainLayout
 function ThemeToggle({ isDark, onToggle }: { isDark: boolean; onToggle: () => void }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <svg
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        className="h-4 w-4 text-black dark:text-gray-400"
-      >
-        <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
-      </svg>
+      <LightModeIcon className="h-4 w-4 text-black dark:text-gray-400" fontSize="inherit" />
 
       <button
         type="button"
@@ -83,17 +79,7 @@ function ThemeToggle({ isDark, onToggle }: { isDark: boolean; onToggle: () => vo
         />
       </button>
 
-      <svg
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        className="h-4 w-4 text-black dark:text-gray-400"
-      >
-        <path
-          fillRule="evenodd"
-          d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.7-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
-          clipRule="evenodd"
-        />
-      </svg>
+      <DarkModeIcon className="h-4 w-4 text-black dark:text-gray-400" fontSize="inherit" />
     </div>
   )
 }
