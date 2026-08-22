@@ -14,9 +14,19 @@ public class MenuService {
 
     private final MenuItemRepository menuItemRepository;
 
-    public List<MenuItem> getMenu(String search, String category) {
+    public List<MenuItem> getMenu(String search, List<String> categories) {
         String normalizedSearch = StringUtils.hasText(search) ? search.trim() : null;
-        String normalizedCategory = StringUtils.hasText(category) ? category.trim() : null;
-        return menuItemRepository.findByFilters(normalizedSearch, normalizedCategory);
+
+        List<String> normalizedCategories = categories == null
+                ? List.of()
+                : categories.stream()
+                .filter(StringUtils::hasText)
+                .map(String::trim)
+                .distinct()
+                .toList();
+
+        return normalizedCategories.isEmpty()
+                ? menuItemRepository.findBySearch(normalizedSearch)
+                : menuItemRepository.findBySearchAndCategories(normalizedSearch, normalizedCategories);
     }
 }

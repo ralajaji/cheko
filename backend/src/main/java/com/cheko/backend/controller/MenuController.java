@@ -17,7 +17,7 @@ public class MenuController {
     @GetMapping
     public List<MenuItem> getMenu(
             @RequestParam(required = false) String search,
-            @RequestParam(required = false) String category) {
+            @RequestParam(required = false) List<String> category) {
         return menuService.getMenu(search, category);
     }
 }
