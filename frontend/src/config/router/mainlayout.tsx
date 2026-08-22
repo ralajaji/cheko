@@ -50,7 +50,7 @@ function MainLayout() {
         </div>
       </div>
 
-      <main className="flex-1 md:mx-36 mx-2">
+      <main className="flex-1">
         <Outlet />
       </main>
     </div>

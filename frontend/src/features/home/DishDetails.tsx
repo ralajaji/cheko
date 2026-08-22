@@ -3,7 +3,7 @@ import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import useCartStore from '../../store/cartStore'
 
-export type DishDetailsProps = {
+type DishDetailsProps = {
   id: number
   name: string
   description: string

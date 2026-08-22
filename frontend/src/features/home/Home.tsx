@@ -37,9 +37,9 @@ function Home() {
   };
 
   return (
-    <div className="flex flex-col gap-4 py-4">
+    <div className="flex flex-col gap-4 py-4 mx-2 md:mx-36">
       <div className="sticky z-20 top-45 bg-background dark:bg-background-dark">
-        <MenuSearchAndFilter onSearch={handleSearch} className="-mt-10 " />
+        <MenuSearchAndFilter onSearch={handleSearch} className="-mt-10" />
         <div className="mt-4">
           {!isLoading && data ? (
             <RestaurantMenuTypeCards categories={categoryCounts} />
