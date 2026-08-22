@@ -11,11 +11,21 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Integer> {
 
     @Query("""
         SELECT m FROM MenuItem m
-        WHERE (:category IS NULL OR m.category = :category)
+        WHERE (:search IS NULL
+               OR LOWER(m.name) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+               OR LOWER(m.description) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+        ORDER BY m.id
+        """)
+    List<MenuItem> findBySearch(@Param("search") String search);
+
+    @Query("""
+        SELECT m FROM MenuItem m
+        WHERE m.category IN :categories
           AND (:search IS NULL
                OR LOWER(m.name) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                OR LOWER(m.description) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
         ORDER BY m.id
         """)
-    List<MenuItem> findByFilters(@Param("search") String search, @Param("category") String category);
+    List<MenuItem> findBySearchAndCategories(@Param("search") String search,
+                                             @Param("categories") List<String> categories);
 }
